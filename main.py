@@ -5,12 +5,16 @@ from flask import redirect
 from flask_cors import CORS
 import user_management as dbHandler
 
+from flask_wtf.csrf import CSRFProtect
+import os  # Useful for generating a secret key
+
 # Code snippet for logging a message
 # app.logger.critical("message")
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = "use-a-long-random-string-here"
+csrf = CSRFProtect(app)
 # Enable CORS to allow cross-origin requests (needed for CSRF demo in Codespaces)
-CORS(app)
 
 
 @app.route("/success.html", methods=["POST", "GET", "PUT", "PATCH", "DELETE"])
