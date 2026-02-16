@@ -42,13 +42,6 @@ def retrieveUsers(username, password):
     # 3. FIX: Always do the File I/O
     # Previously, this only happened for valid users (leaking info).
     # Now we do it for everyone.
-    try:
-        with open("visitor_log.txt", "r") as file:
-            number = int(file.read().strip())
-        with open("visitor_log.txt", "w") as file:
-            file.write(str(number + 1))
-    except:
-        pass  # Ignore file errors for this demo
 
     # 4. FIX: Constant Time Comparison
     # secrets.compare_digest takes the same time whether it matches or not.

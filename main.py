@@ -20,8 +20,14 @@ csrf = CSRFProtect(app)
 @app.route("/success.html", methods=["POST", "GET", "PUT", "PATCH", "DELETE"])
 def addFeedback():
     if request.method == "GET" and request.args.get("url"):
-        url = request.args.get("url", "")
-        return redirect(url, code=302)
+        # This is our 'Gatekeeper' logic.
+        target = request.args.get("url", "/home")
+
+        # If the link starts with '/' it's our site. If it starts with 'http' it's blocked.
+        if target.startswith("/") and not target.startswith("//"):
+            return redirect(target)
+        else:
+            return redirect("/home")  # Send them back home if it looks suspicious
     if request.method == "POST":
         feedback = request.form["feedback"]
         dbHandler.insertFeedback(feedback)
